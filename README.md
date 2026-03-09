@@ -23,18 +23,18 @@ Open [http://localhost:3000](http://localhost:3000). Sign in at `/login` (e.g. `
 
 **Full step-by-step (setup, admin login, add members):** [docs/HOW_TO_USE.md](docs/HOW_TO_USE.md).
 
-## Deploy to Vercel (Admin panel only)
+## Deploy to Vercel (Admin panel only — Admin login only)
 
-This repo is for the **Admin portal** only. Connect in Vercel and use:
+This repo is for the **Admin portal** only. The login page will show **Admin sign in** only (no Team member/Admin toggle).
 
 | Setting | Value |
 |--------|--------|
-| **Root Directory** | **`admin`** (so build uses Admin portal) |
+| **Root Directory** | **`admin`** (required — so build sets Admin portal and login) |
 | **Build Command** | `npm run build` |
 | **Output Directory** | `dist` |
 | **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
 
-Config is in [vercel.json](vercel.json) (root) and [admin/vercel.json](admin/vercel.json).
+If the deployment URL contains `admin` (e.g. `offee-admin.vercel.app`), Admin-only login is also detected automatically.
 
 ## Scripts
 
