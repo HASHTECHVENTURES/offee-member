@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "contexts/**/*.tsx",
+    "pages/**/*.tsx",
+    "components/**/*.tsx",
+    "actions/**/*.ts",
+    "lib/utils.ts",
+    "lib/supabase-browser.ts",
+    "services/**/*.ts",
+    "types/**/*.ts",
+    "utils/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "app",
+    "api",
+    "lib/supabase/client.ts",
+    "lib/supabase/server.ts",
+    "lib/auth.ts"
+  ]
+}
