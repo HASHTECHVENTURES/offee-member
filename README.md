@@ -23,6 +23,20 @@ Open [http://localhost:3000](http://localhost:3000). Sign in at `/login` (e.g. `
 
 **Full step-by-step (setup, admin login, add members):** [docs/HOW_TO_USE.md](docs/HOW_TO_USE.md).
 
+## Deploy to Vercel (GitHub)
+
+Connect this repo in Vercel and use:
+
+| Setting | Value |
+|--------|--------|
+| **Root Directory** | Leave **empty** (or `./`) — app is at repo root |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `dist` |
+| **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
+
+Optional: set `VITE_APP_ROLE` to `admin` \| `ceo` \| `leader` \| `member` for [4 separate websites](docs/FOUR_WEBSITES_DEPLOYMENT.md).  
+Config is in [vercel.json](vercel.json) (build, output, SPA rewrites).
+
 ## Scripts
 
 | Command         | Description              |
