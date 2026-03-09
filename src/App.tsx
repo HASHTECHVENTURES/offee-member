@@ -2,8 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { ProfileProvider, useProfile } from "@/contexts/ProfileContext";
-import { getIsAppAdmin } from "@/lib/role-utils";
+import { getDefaultHomeForRole, getAppRolePortal, ROLE_HOME_PATHS } from "@/lib/role-utils";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { PortalGuard } from "@/components/layout/PortalGuard";
 import { LoginPage } from "@/pages/LoginPage";
 import { WorkspacePage } from "@/pages/WorkspacePage";
 import { DailyScorecardPage } from "@/pages/DailyScorecardPage";
@@ -48,7 +49,9 @@ function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+/** One authentication gate → redirect to role-specific home (or portal home when 4-website mode). */
 function DefaultRedirect() {
+  const portal = getAppRolePortal();
   const { profile, role, loading } = useProfile();
   if (loading) {
     return (
@@ -57,8 +60,23 @@ function DefaultRedirect() {
       </div>
     );
   }
-  const isAppAdmin = getIsAppAdmin(role, profile);
-  return <Navigate to={isAppAdmin ? "/admin" : "/workspace"} replace />;
+  const home = portal ? ROLE_HOME_PATHS[portal] : getDefaultHomeForRole(role, profile);
+  return <Navigate to={home} replace />;
+}
+
+/** /workspace → redirect to the role-specific link (or portal home in 4-website mode). */
+function WorkspaceRedirect() {
+  const portal = getAppRolePortal();
+  const { profile, role, loading } = useProfile();
+  if (loading) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+  const home = portal ? ROLE_HOME_PATHS[portal] : getDefaultHomeForRole(role, profile);
+  return <Navigate to={home} replace />;
 }
 
 export default function App() {
@@ -66,9 +84,18 @@ export default function App() {
     <>
       <Routes>
         <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
-        <Route path="/" element={<ProtectedRoute><ProfileProvider><ErrorBoundary><DashboardLayout /></ErrorBoundary></ProfileProvider></ProtectedRoute>}>
+        <Route path="/login/admin" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+        <Route path="/login/ceo" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+        <Route path="/login/leader" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+        <Route path="/login/member" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+        <Route path="/login/hr" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+        <Route path="/" element={<ProtectedRoute><ProfileProvider><ErrorBoundary><PortalGuard><DashboardLayout /></PortalGuard></ErrorBoundary></ProfileProvider></ProtectedRoute>}>
           <Route index element={<DefaultRedirect />} />
-          <Route path="workspace" element={<WorkspacePage />} />
+          <Route path="workspace" element={<WorkspaceRedirect />} />
+          <Route path="ceo" element={<WorkspacePage />} />
+          <Route path="leader" element={<WorkspacePage />} />
+          <Route path="member" element={<WorkspacePage />} />
+          <Route path="hr" element={<WorkspacePage />} />
           <Route path="daily-scorecard" element={<DailyScorecardPage />} />
           <Route path="scorecards" element={<WeeklyScorecardPage />} />
           <Route path="decisions" element={<DecisionsPage />} />

@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/contexts/ProfileContext";
-import { getIsAppAdmin, getIsCEO, getCanManageOKRs, getCanManageKeyResults } from "@/lib/role-utils";
+import { getIsAppAdmin, getIsCEO, getCanManageOKRs, getCanManageKeyResults, getDefaultHomeForRole } from "@/lib/role-utils";
 import { keyResultService } from "@/services";
 import { supabase } from "@/lib/supabase-browser";
 import type { NavItem } from "@/components/layout/nav-config";
@@ -123,9 +123,10 @@ export function SidebarNavigation({
     }
     return true;
   });
+  const dashboardHome = getDefaultHomeForRole(role, profile);
   const navItems = mainFiltered.map((item, i) =>
     i === 0 && item.href === "/workspace"
-      ? { ...item, label: isCEO ? "CEO Dashboard" : "My Dashboard" }
+      ? { ...item, label: isCEO ? "CEO Dashboard" : "My Dashboard", href: dashboardHome }
       : item
   );
   const bottomFiltered = bottomNav.filter(

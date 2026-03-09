@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { supabase, hasSupabaseConfig } from "@/lib/supabase-browser";
+import { getAppRolePortal } from "@/lib/role-utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,13 +11,34 @@ import { cn } from "@/lib/utils";
 
 const ADMIN_DEMO_EMAIL = "admin@test.com";
 
+/** Separate login links: /login/admin, /login/ceo, /login/leader, /login/member, /login/hr */
+const LOGIN_PATH_LABELS: Record<string, string> = {
+  "/login/admin": "Admin",
+  "/login/ceo": "CEO",
+  "/login/leader": "Leader",
+  "/login/member": "Member",
+  "/login/hr": "HR",
+};
+
+const PORTAL_LABELS: Record<string, string> = {
+  admin: "Admin",
+  ceo: "CEO",
+  leader: "Leader",
+  member: "Member",
+  hr: "HR",
+};
+
 type LoginMode = "admin" | "normal";
 
 export function LoginPage() {
+  const { pathname } = useLocation();
+  const portal = getAppRolePortal();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [mode, setMode] = useState<LoginMode>("normal");
-  const [email, setEmail] = useState("");
+  const [mode, setMode] = useState<LoginMode>(portal === "admin" ? "admin" : "normal");
+  const [email, setEmail] = useState(portal === "admin" ? ADMIN_DEMO_EMAIL : "");
+  const loginCategoryLabel = portal ? PORTAL_LABELS[portal] : (LOGIN_PATH_LABELS[pathname] ?? null);
+  const isSingleRolePortal = !!portal;
 
   function switchMode(newMode: LoginMode) {
     setMode(newMode);
@@ -41,8 +64,8 @@ export function LoginPage() {
         setError(signInError.message);
         return;
       }
-      const isAdminLogin = emailValue.toLowerCase() === ADMIN_DEMO_EMAIL.toLowerCase();
-      window.location.href = isAdminLogin ? "/admin" : "/workspace";
+      // One gate: go to "/" and let the app redirect to role-specific home (/admin, /ceo, /leader, /member, /hr)
+      window.location.href = "/";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
     } finally {
@@ -58,7 +81,9 @@ export function LoginPage() {
             O
           </div>
           <h1 className="text-xl font-bold text-foreground">Offee</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Sign in to continue</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {loginCategoryLabel ? `${loginCategoryLabel} sign in` : "Sign in to continue"}
+          </p>
         </div>
 
         {!hasSupabaseConfig && (
@@ -69,37 +94,39 @@ export function LoginPage() {
           />
         )}
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          {/* Admin vs Normal login toggle */}
-          <div className="mb-6 flex rounded-lg border border-border bg-muted/50 p-1">
-            <button
-              type="button"
-              onClick={() => switchMode("normal")}
-              disabled={!hasSupabaseConfig}
-              className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors",
-                mode === "normal"
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <User className="size-4" />
-              Team member
-            </button>
-            <button
-              type="button"
-              onClick={() => switchMode("admin")}
-              disabled={!hasSupabaseConfig}
-              className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors",
-                mode === "admin"
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Shield className="size-4" />
-              Admin
-            </button>
-          </div>
+          {/* Show role toggle only when not a single-role portal (4-website mode) */}
+          {!isSingleRolePortal && (
+            <div className="mb-6 flex rounded-lg border border-border bg-muted/50 p-1">
+              <button
+                type="button"
+                onClick={() => switchMode("normal")}
+                disabled={!hasSupabaseConfig}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors",
+                  mode === "normal"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <User className="size-4" />
+                Team member
+              </button>
+              <button
+                type="button"
+                onClick={() => switchMode("admin")}
+                disabled={!hasSupabaseConfig}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors",
+                  mode === "admin"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Shield className="size-4" />
+                Admin
+              </button>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -145,6 +172,8 @@ export function LoginPage() {
                   <Loader2 className="size-4 animate-spin" />
                   Signing in…
                 </>
+              ) : isSingleRolePortal ? (
+                `Sign in`
               ) : mode === "admin" ? (
                 "Sign in as admin"
               ) : (

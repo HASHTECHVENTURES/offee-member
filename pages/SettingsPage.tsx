@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/contexts/ProfileContext";
+import { getAppRolePortal, getLoginPathForRole } from "@/lib/role-utils";
 import { PageHeader } from "@/components/design-system";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
@@ -10,10 +11,12 @@ export function SettingsPage() {
   const { profile, role } = useProfile();
   const navigate = useNavigate();
   const roleDisplay = role?.name ?? profile?.role ?? null;
+  const portal = getAppRolePortal();
 
   async function handleSignOut() {
     await signOut();
-    navigate("/login", { replace: true });
+    const loginPath = portal ? "/login" : getLoginPathForRole(role, profile);
+    navigate(loginPath, { replace: true });
   }
 
   return (

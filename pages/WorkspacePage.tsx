@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/lib/supabase-browser";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/contexts/ProfileContext";
-import { getIsAppAdmin, getIsCEO } from "@/lib/role-utils";
+import { getIsAppAdmin, getIsCEO, getDefaultHomeForRole, getRoleSlugForPath } from "@/lib/role-utils";
 import {
   okrService,
   keyResultService,
@@ -21,6 +21,7 @@ import type { OKR, KeyResult, Decision, UserProfile } from "@/types";
 const DEFAULT_WORKSPACE_ID = "a0000000-0000-0000-0000-000000000001";
 
 export function WorkspacePage() {
+  const { pathname } = useLocation();
   const { user } = useAuth();
   const { profile, role } = useProfile();
   const [okrs, setOkrs] = useState<OKR[]>([]);
@@ -70,6 +71,10 @@ export function WorkspacePage() {
 
   if (isAppAdmin) {
     return <Navigate to="/admin" replace />;
+  }
+  const expectedRole = getRoleSlugForPath(pathname);
+  if (expectedRole && role?.slug !== expectedRole) {
+    return <Navigate to={getDefaultHomeForRole(role, profile)} replace />;
   }
 
   if (error) {
