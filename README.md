@@ -31,6 +31,7 @@ Use **Root Directory** so the build sets the correct portal; the login page will
 |-------------|----------------|-------------|
 | **offee.admin** | **`admin`** | Admin sign in only |
 | **offee.leader** | **`leader`** | Leader sign in only |
+| **offeemember** | **`member`** | Member sign in only |
 
 | Setting | Value |
 |--------|--------|
@@ -38,7 +39,7 @@ Use **Root Directory** so the build sets the correct portal; the login page will
 | **Output Directory** | `dist` |
 | **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
 
-If the deployment URL contains the role (e.g. `offee-admin.vercel.app`, `offee-leader.vercel.app`), that role’s login is also detected automatically.
+If the deployment URL contains the role (e.g. `offee-admin.vercel.app`, `offee-leader.vercel.app`, `offeemember.vercel.app`), that role’s login is also detected automatically.
 
 ## Scripts
 

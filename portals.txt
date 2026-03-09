@@ -2,5 +2,6 @@ Single-portal deployments (one login per site).
 
 - offee.admin: Root Directory "admin" → Admin sign in only.
 - offee.leader: Root Directory "leader" → Leader sign in only.
+- offeemember: Root Directory "member" → Member sign in only.
 
 Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY for all.
