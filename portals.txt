@@ -1,7 +1,4 @@
-Admin
-CEO
-Leader
-Member
+Admin panel only.
 
-Set VITE_APP_ROLE per Vercel project: admin | ceo | leader | member
-Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in all 4.
+This repo (offee.okr) deploys the Admin portal. Use Root Directory "admin" in Vercel, or set VITE_APP_ROLE=admin.
+Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.

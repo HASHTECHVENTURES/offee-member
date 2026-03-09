@@ -1,8 +1,0 @@
-{
-  "name": "offee-leader",
-  "private": true,
-  "scripts": {
-    "install": "cd .. && npm install",
-    "build": "cd .. && VITE_APP_ROLE=leader npm run build && cp -r dist leader/dist"
-  }
-}

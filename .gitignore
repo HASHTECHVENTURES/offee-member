@@ -21,9 +21,6 @@
 /build
 /dist
 /admin/dist
-/ceo/dist
-/leader/dist
-/member/dist
 
 # misc
 .DS_Store

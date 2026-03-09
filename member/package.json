@@ -1,8 +1,0 @@
-{
-  "name": "offee-member",
-  "private": true,
-  "scripts": {
-    "install": "cd .. && npm install",
-    "build": "cd .. && VITE_APP_ROLE=member npm run build && cp -r dist member/dist"
-  }
-}
