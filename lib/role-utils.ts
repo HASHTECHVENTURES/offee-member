@@ -88,6 +88,7 @@ export function getAppRolePortal(): RoleSlug | null {
     const h = window.location.hostname.toLowerCase();
     if (h.includes("ceo")) return "ceo";
     if (h.includes("leader")) return "leader";
+    if (h.includes("offeemember") || h.includes("offee-member")) return "member";
     if (h.includes("member")) return "member";
     if (h.includes("admin")) return "admin";
     if (h.includes("hr")) return "hr";

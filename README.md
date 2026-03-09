@@ -33,11 +33,13 @@ Use **Root Directory** so the build sets the correct portal; the login page will
 | **offee.leader** | **`leader`** | Leader sign in only |
 | **offeemember** | **`member`** | Member sign in only |
 
+**For [offeemember](https://github.com/HASHTECHVENTURES/offeemember):** In Vercel → Project Settings → General, set **Root Directory** to **`member`** and redeploy so the login shows only “Member sign in”. Optionally set env var `VITE_APP_ROLE=member` as a fallback.
+
 | Setting | Value |
 |--------|--------|
 | **Build Command** | `npm run build` |
 | **Output Directory** | `dist` |
-| **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
+| **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (optional: `VITE_APP_ROLE` = `member` for Member-only login) |
 
 If the deployment URL contains the role (e.g. `offee-admin.vercel.app`, `offee-leader.vercel.app`, `offeemember.vercel.app`), that role’s login is also detected automatically.
 
