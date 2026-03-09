@@ -76,6 +76,7 @@ export function getLoginPathForRole(role: Role | null, profile: UserProfile | nu
 
 /**
  * When set (e.g. VITE_APP_ROLE=admin), this deployment is a single-role "website".
+ * Fallback: detect from hostname (e.g. offee-ceo.vercel.app -> ceo) so CEO/Leader/Member repos show the right login.
  */
 const PORTAL_SLUGS: RoleSlug[] = ["admin", "ceo", "leader", "member", "hr"];
 
@@ -83,5 +84,13 @@ export function getAppRolePortal(): RoleSlug | null {
   const v = ((typeof import.meta !== "undefined" && import.meta.env?.VITE_APP_ROLE) ?? "") as string;
   const slug = v.trim().toLowerCase();
   if (PORTAL_SLUGS.includes(slug as RoleSlug)) return slug as RoleSlug;
+  if (typeof window !== "undefined" && window.location?.hostname) {
+    const h = window.location.hostname.toLowerCase();
+    if (h.includes("ceo")) return "ceo";
+    if (h.includes("leader")) return "leader";
+    if (h.includes("member")) return "member";
+    if (h.includes("admin")) return "admin";
+    if (h.includes("hr")) return "hr";
+  }
   return null;
 }
