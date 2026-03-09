@@ -1,0 +1,7 @@
+Admin
+CEO
+Leader
+Member
+
+Set VITE_APP_ROLE per Vercel project: admin | ceo | leader | member
+Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in all 4.
