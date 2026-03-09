@@ -1,4 +1,6 @@
-Admin panel only.
+Single-portal deployments (one login per site).
 
-This repo (offee.okr) deploys the Admin portal. Use Root Directory "admin" in Vercel, or set VITE_APP_ROLE=admin.
-Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.
+- offee.admin: Root Directory "admin" → Admin sign in only.
+- offee.leader: Root Directory "leader" → Leader sign in only.
+
+Same VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY for all.

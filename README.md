@@ -23,18 +23,22 @@ Open [http://localhost:3000](http://localhost:3000). Sign in at `/login` (e.g. `
 
 **Full step-by-step (setup, admin login, add members):** [docs/HOW_TO_USE.md](docs/HOW_TO_USE.md).
 
-## Deploy to Vercel (Admin panel only — Admin login only)
+## Deploy to Vercel (single-portal — one login per site)
 
-This repo is for the **Admin portal** only. The login page will show **Admin sign in** only (no Team member/Admin toggle).
+Use **Root Directory** so the build sets the correct portal; the login page will show only that role (no Team member/Admin toggle).
+
+| Repo / site | Root Directory | Login shown |
+|-------------|----------------|-------------|
+| **offee.admin** | **`admin`** | Admin sign in only |
+| **offee.leader** | **`leader`** | Leader sign in only |
 
 | Setting | Value |
 |--------|--------|
-| **Root Directory** | **`admin`** (required — so build sets Admin portal and login) |
 | **Build Command** | `npm run build` |
 | **Output Directory** | `dist` |
 | **Environment variables** | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
 
-If the deployment URL contains `admin` (e.g. `offee-admin.vercel.app`), Admin-only login is also detected automatically.
+If the deployment URL contains the role (e.g. `offee-admin.vercel.app`, `offee-leader.vercel.app`), that role’s login is also detected automatically.
 
 ## Scripts
 
