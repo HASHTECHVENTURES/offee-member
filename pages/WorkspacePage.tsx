@@ -161,7 +161,7 @@ export function WorkspacePage() {
             </Button>
           }
         />
-        <StatGrid columns={statsForMyDashboard.length} stats={statsForMyDashboard} />
+        <StatGrid columns={Math.min(4, Math.max(2, statsForMyDashboard.length)) as 2 | 3 | 4} stats={statsForMyDashboard} />
         <div className={isLeaderOrCEO || isHR ? "grid gap-6 lg:grid-cols-2" : "space-y-6"}>
           {isHR && (
           <div className="space-y-4">

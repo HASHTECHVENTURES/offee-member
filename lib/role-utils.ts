@@ -11,7 +11,7 @@ export function getIsAppAdmin(role: Role | null, profile: UserProfile | null): b
 }
 
 export function getIsCEO(role: Role | null): boolean {
-  return role?.dashboard_type === "ceo" ?? false;
+  return role?.dashboard_type === "ceo";
 }
 
 export function getCanManageOKRs(role: Role | null, profile: UserProfile | null): boolean {

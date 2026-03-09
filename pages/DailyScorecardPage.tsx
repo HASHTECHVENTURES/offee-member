@@ -16,8 +16,8 @@ const DEFAULT_WORKSPACE_ID = "a0000000-0000-0000-0000-000000000001";
 export function DailyScorecardPage() {
   const { user } = useAuth();
   const { profile, role, membership } = useProfile();
-  const leaderRoleForTemplate = role?.name ?? profileFetched?.role ?? profile?.role ?? undefined;
   const [profileFetched, setProfileFetched] = useState<UserProfile | null>(null);
+  const leaderRoleForTemplate = role?.name ?? profileFetched?.role ?? profile?.role ?? undefined;
   const [template, setTemplate] = useState<LeaderKPITemplate | null>(null);
   const [existing, setExisting] = useState<DailyLeaderScorecard | null>(null);
   const [saving, setSaving] = useState(false);
